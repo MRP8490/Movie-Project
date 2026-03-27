@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Movie Explorer Project</title>
+  </head>
+  <body>
+    <header>
+      <h1>Movie Explorer</h1>
+      <p>Find great movies and sort them your way </p>
+    </header>
+
+    <main class="container">
+      <div class="top-bar">
+        <h2>Movie Night Selection 🍿</h2>
+
+        <label>
+          Sort by:
+          <select id="sortSelect">
+            <option value="az">Alphabetical A to Z</option>
+            <option value="za">Alphabetical Z to A</option>
+            <option value="newest">Newest to Oldest</option>
+            <option value="oldest">Oldest to Newest</option>
+          </select>
+        </label>
+      </div>
+
+      <div id="status" class="status">Loading movies...</div>
+      <div id="moviesContainer" class="movies-grid"></div>
+    </main>
+
+    <footer>
+      <p>© 2026 Movie Explorer | Built by Mona</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
