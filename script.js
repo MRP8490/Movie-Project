@@ -1,15 +1,26 @@
 const apiKey = "e314295";
 
-const searchTerms = ["batman", "avengers", "spider", "harry", "fast", "superman"];
+const searchTerms = [
+  "batman",
+  "avengers",
+  "spider",
+  "harry",
+  "fast",
+  "superman",
+];
 
 const moviesContainer = document.getElementById("moviesContainer");
 const status = document.getElementById("status");
 const sortSelect = document.getElementById("sortSelect");
+const searchInput = document.getElementById("searchInput");
 
 let movies = [];
 
 async function fetchMovies() {
   try {
+    status.textContent = "Loading movies...";
+    status.style.display = "block";
+
     const requests = searchTerms.map((term) =>
       fetch(`https://www.omdbapi.com/?s=${term}&apikey=${apiKey}`).then((res) =>
         res.json()
@@ -26,11 +37,11 @@ async function fetchMovies() {
 
     if (movies.length === 0) {
       status.textContent = "No movies found.";
+      moviesContainer.innerHTML = "";
       return;
     }
 
-    status.style.display = "none";
-    sortAndRender(sortSelect.value);
+    filterSortAndRender();
   } catch (error) {
     status.textContent =
       "Error loading movies. Please check your API key or internet connection.";
@@ -40,6 +51,14 @@ async function fetchMovies() {
 
 function renderMovies(movieList) {
   moviesContainer.innerHTML = "";
+
+  if (movieList.length === 0) {
+    status.textContent = "No movies found.";
+    status.style.display = "block";
+    return;
+  }
+
+  status.style.display = "none";
 
   movieList.forEach((movie) => {
     const poster =
@@ -64,24 +83,30 @@ function renderMovies(movieList) {
   });
 }
 
-function sortAndRender(sortType) {
-  const sortedMovies = [...movies];
+function filterSortAndRender() {
+  let filteredMovies = [...movies];
 
-  if (sortType === "az") {
-    sortedMovies.sort((a, b) => a.Title.localeCompare(b.Title));
-  } else if (sortType === "za") {
-    sortedMovies.sort((a, b) => b.Title.localeCompare(a.Title));
-  } else if (sortType === "newest") {
-    sortedMovies.sort((a, b) => parseInt(b.Year) - parseInt(a.Year));
-  } else if (sortType === "oldest") {
-    sortedMovies.sort((a, b) => parseInt(a.Year) - parseInt(b.Year));
+  const searchValue = searchInput.value.toLowerCase().trim();
+  const sortValue = sortSelect.value;
+
+  filteredMovies = filteredMovies.filter((movie) =>
+    movie.Title.toLowerCase().includes(searchValue)
+  );
+
+  if (sortValue === "az") {
+    filteredMovies.sort((a, b) => a.Title.localeCompare(b.Title));
+  } else if (sortValue === "za") {
+    filteredMovies.sort((a, b) => b.Title.localeCompare(a.Title));
+  } else if (sortValue === "newest") {
+    filteredMovies.sort((a, b) => parseInt(b.Year) - parseInt(a.Year));
+  } else if (sortValue === "oldest") {
+    filteredMovies.sort((a, b) => parseInt(a.Year) - parseInt(b.Year));
   }
 
-  renderMovies(sortedMovies);
+  renderMovies(filteredMovies);
 }
 
-sortSelect.addEventListener("change", (event) => {
-  sortAndRender(event.target.value);
-});
+sortSelect.addEventListener("change", filterSortAndRender);
+searchInput.addEventListener("input", filterSortAndRender);
 
 fetchMovies();

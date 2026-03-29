@@ -9,22 +9,30 @@
   <body>
     <header>
       <h1>Movie Explorer</h1>
-      <p>Find great movies and sort them your way </p>
+      <p>Find great movies and sort them your way</p>
     </header>
 
     <main class="container">
       <div class="top-bar">
         <h2>Movie Selection 🍿</h2>
 
-        <label>
-          Sort by:
-          <select id="sortSelect">
-            <option value="az">Alphabetical A to Z</option>
-            <option value="za">Alphabetical Z to A</option>
-            <option value="newest">Newest to Oldest</option>
-            <option value="oldest">Oldest to Newest</option>
-          </select>
-        </label>
+        <div class="controls">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search movies..."
+          />
+
+          <label for="sortSelect">
+            Sort by:
+            <select id="sortSelect">
+              <option value="az">Alphabetical A to Z</option>
+              <option value="za">Alphabetical Z to A</option>
+              <option value="newest">Newest to Oldest</option>
+              <option value="oldest">Oldest to Newest</option>
+            </select>
+          </label>
+        </div>
       </div>
 
       <div id="status" class="status">Loading movies...</div>
